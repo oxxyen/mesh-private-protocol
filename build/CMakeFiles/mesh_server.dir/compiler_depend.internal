@@ -257,7 +257,7 @@ CMakeFiles/mesh_server.dir/src/main.cpp.o
 
 CMakeFiles/mesh_server.dir/src/server.c.o
  /home/just/tsl_chat/src/server.c
- /home/just/tsl_chat/src/server.h
+ /home/just/tsl_chat/src/server_wrapper.h
  /usr/include/alloca.h
  /usr/include/arpa/inet.h
  /usr/include/asm-generic/bitsperlong.h

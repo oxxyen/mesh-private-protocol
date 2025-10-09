@@ -255,7 +255,7 @@ CMakeFiles/mesh_server.dir/src/main.cpp.o: /home/just/tsl_chat/src/main.cpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
 
 CMakeFiles/mesh_server.dir/src/server.c.o: /home/just/tsl_chat/src/server.c \
-  /home/just/tsl_chat/src/server.h \
+  /home/just/tsl_chat/src/server_wrapper.h \
   /usr/include/alloca.h \
   /usr/include/arpa/inet.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -955,6 +955,8 @@ CMakeFiles/mesh_server.dir/src/server.c.o: /home/just/tsl_chat/src/server.c \
 
 /usr/include/bits/types.h:
 
+/home/just/tsl_chat/src/server_wrapper.h:
+
 /usr/include/c++/15.2.1/bits/move.h:
 
 /usr/include/asm-generic/int-ll64.h:
@@ -1268,7 +1270,5 @@ CMakeFiles/mesh_server.dir/src/server.c.o: /home/just/tsl_chat/src/server.c \
 /usr/include/unistd.h:
 
 /usr/include/arpa/inet.h:
-
-/home/just/tsl_chat/src/server.h:
 
 /usr/include/asm-generic/ioctls.h:

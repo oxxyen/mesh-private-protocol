@@ -64,20 +64,19 @@ CMakeFiles/mesh_server.dir/src/server.c.o: \
  /usr/include/openssl/objects.h /usr/include/openssl/obj_mac.h \
  /usr/include/openssl/asn1.h /usr/include/openssl/asn1err.h \
  /usr/include/openssl/objectserr.h /usr/include/openssl/aes.h \
- /usr/local/include/signal/signal_protocol_types.h /usr/include/unistd.h \
+ /usr/include/string.h /usr/include/strings.h /usr/include/unistd.h \
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
- /usr/include/string.h /usr/include/strings.h /usr/include/arpa/inet.h \
- /usr/include/netinet/in.h /usr/include/sys/socket.h \
- /usr/include/bits/types/struct_iovec.h /usr/include/bits/socket.h \
- /usr/include/bits/socket_type.h /usr/include/bits/sockaddr.h \
- /usr/include/asm/socket.h /usr/include/asm-generic/socket.h \
- /usr/include/linux/posix_types.h /usr/include/linux/stddef.h \
- /usr/include/asm/posix_types.h /usr/include/asm/posix_types_64.h \
- /usr/include/asm-generic/posix_types.h /usr/include/asm/bitsperlong.h \
- /usr/include/asm-generic/bitsperlong.h /usr/include/asm/sockios.h \
- /usr/include/asm-generic/sockios.h \
+ /usr/include/arpa/inet.h /usr/include/netinet/in.h \
+ /usr/include/sys/socket.h /usr/include/bits/types/struct_iovec.h \
+ /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
+ /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
+ /usr/include/asm-generic/socket.h /usr/include/linux/posix_types.h \
+ /usr/include/linux/stddef.h /usr/include/asm/posix_types.h \
+ /usr/include/asm/posix_types_64.h /usr/include/asm-generic/posix_types.h \
+ /usr/include/asm/bitsperlong.h /usr/include/asm-generic/bitsperlong.h \
+ /usr/include/asm/sockios.h /usr/include/asm-generic/sockios.h \
  /usr/include/bits/types/struct_osockaddr.h /usr/include/bits/in.h \
  /usr/include/netinet/tcp.h /usr/include/openssl/ssl.h \
  /usr/include/openssl/e_ostime.h /usr/include/sys/time.h \
@@ -136,4 +135,5 @@ CMakeFiles/mesh_server.dir/src/server.c.o: \
  /usr/local/include/signal/curve.h /usr/local/include/signal/ratchet.h \
  /usr/local/include/signal/session_builder.h \
  /usr/local/include/signal/session_cipher.h \
- /usr/local/include/signal/key_helper.h /home/just/tsl_chat/src/server.h
+ /usr/local/include/signal/key_helper.h \
+ /home/just/tsl_chat/src/server_wrapper.h
