@@ -300,7 +300,7 @@ void disconnect_client(client_t *client, const char *reason) {
 
 // Signal Protocol callback функции
 int identity_key_store_get_identity_key_pair(signal_buffer **public_data, signal_buffer **private_data, void *user_data) {
-    // В реальной реализации здесь нужно загружать ключи из базы данных
+    // TODO: загрузка данных из базы.
     signal_buffer *public_buf = signal_buffer_alloc(32);
     signal_buffer *private_buf = signal_buffer_alloc(32);
     
