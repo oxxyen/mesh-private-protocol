@@ -42,8 +42,40 @@ def spinner(text: str, duration: float = 1.0):
         i += 1
     sys.stdout.write("\r" + " " * (len(text) + 4) + "\r")
 
-def install_signal_protocol():
-    distro = detect_distro()
+# ASCII ART
+def show_mesh_ascii():
+    mesh_ascii = f"""
+{Colors.MAGENTA}{Colors.BOLD}
+███╗   ███╗███████╗███████╗██╗  ██╗      █████╗ ███╗   ██╗███████╗ ██████╗██╗
+████╗ ████║██╔════╝██╔════╝██║  ██║     ██╔══██╗████╗  ██║██╔════╝██╔════╝██║
+██╔████╔██║█████╗  ███████╗███████║     ███████║██╔██╗ ██║███████╗██║     ██║
+██║╚██╔╝██║██╔══╝  ╚════██║██╔══██║     ██╔══██║██║╚██╗██║╚════██║██║     ██║
+██║ ╚═╝ ██║███████╗███████║██║  ██║     ██║  ██║██║ ╚████║███████║╚██████╗██║
+╚═╝     ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝ ╚═════╝╚═╝
+{Colors.RESET}
+{Colors.CYAN}          MESSENGER WITH PRIVATE SIGNAL PROTOCOL - CONTROL UTILITY v3.0{Colors.RESET}
+    """
+    print(mesh_ascii)
+
+def detect_distro():
+    """Определяет дистрибутив Linux"""
+    try:
+        with open('/etc/os-release', 'r') as f:
+            content = f.read().lower()
+            if 'arch' in content:
+                return 'arch'
+            elif 'ubuntu' in content or 'debian' in content:
+                return 'ubuntu'
+            else:
+                return 'unknown'
+    except:
+        return 'unknown'
+
+def install_signal_protocol(distro: str = None):
+    """Установка libsignal-protocol-c для указанного дистрибутива"""
+    if distro is None:
+        distro = detect_distro()
+    
     cprint(f"📦 Установка libsignal-protocol-c для {distro}...", Colors.CYAN)
     
     if distro == "arch":
@@ -82,6 +114,8 @@ def install_signal_protocol():
         return True
     else:
         cprint(f"❌ Не поддерживаемая ОС: {distro}", Colors.RED)
+        cprint("   Используйте --install-signal -u для Ubuntu/Debian", Colors.YELLOW)
+        cprint("   Используйте --install-signal -arch для Arch Linux", Colors.YELLOW)
         return False
 
     try:
@@ -90,6 +124,45 @@ def install_signal_protocol():
         return True
     except Exception as e:
         cprint(f"❌ Ошибка установки: {e}", Colors.RED)
+        return False
+
+def git_update():
+    """Обновление репозитория на GitHub"""
+    cprint("🔄 Обновление репозитория на GitHub...", Colors.CYAN)
+    
+    try:
+        # Проверяем, есть ли изменения
+        result = subprocess.run(["git", "status", "--porcelain"], 
+                              capture_output=True, text=True, check=True)
+        
+        if not result.stdout.strip():
+            cprint("✅ Нет изменений для коммита.", Colors.GREEN)
+            return True
+            
+        # Добавляем все файлы
+        cprint("📁 Добавление файлов...", Colors.CYAN)
+        if not run_command(["git", "add", "."], silent=True):
+            cprint("❌ Ошибка при добавлении файлов", Colors.RED)
+            return False
+            
+        # Создаем коммит
+        cprint("💾 Создание коммита...", Colors.CYAN)
+        commit_msg = f"MESH Update {time.strftime('%Y-%m-%d %H:%M:%S')}"
+        if not run_command(["git", "commit", "-m", commit_msg], silent=True):
+            cprint("❌ Ошибка при создании коммита", Colors.RED)
+            return False
+            
+        # Пушим изменения
+        cprint("🚀 Отправка изменений на GitHub...", Colors.CYAN)
+        if not run_command(["git", "push", "origin", "main"], silent=False):
+            cprint("❌ Ошибка при отправке на GitHub", Colors.RED)
+            return False
+            
+        cprint("✅ Репозиторий успешно обновлен на GitHub!", Colors.GREEN, bold=True)
+        return True
+        
+    except Exception as e:
+        cprint(f"❌ Ошибка при работе с Git: {e}", Colors.RED)
         return False
 
 # Конфигурация
@@ -373,6 +446,8 @@ def run_test_client():
         cprint("❌ Тест не удался.", Colors.RED)
 
 def main():
+    show_mesh_ascii()
+    
     parser = argparse.ArgumentParser(
         prog="meshctl",
         description="Управление сервером MESH",
@@ -393,9 +468,16 @@ def main():
     parser.add_argument("--stats", action="store_true", help="Показать статистику сервера")
     parser.add_argument("--cert", action="store_true", help="Перегенерировать TLS-сертификаты")
     parser.add_argument("--test", action="store_true", help="Запустить тестовый клиент")
+    parser.add_argument("--git-update", action="store_true", help="Обновить репозиторий на GitHub")
+    
+    # Аргументы для установки signal protocol
+    signal_group = parser.add_argument_group("Signal Protocol Installation")
+    signal_group.add_argument("--install-signal", action="store_true", help="Установить signal protocol (автоопределение ОС)")
+    signal_group.add_argument("-u", "--ubuntu", action="store_true", help="Установить signal protocol для Ubuntu/Debian")
+    signal_group.add_argument("-a", "--arch", action="store_true", help="Установить signal protocol для Arch Linux")
+    
     parser.add_argument("--help", "-h", action="store_true", help="Показать эту справку")
     parser.add_argument("--version", action="version", version="MESH Control v3.0")
-    parser.add_argument("--install-signal", action="store_true", help="Установить signal protocol(пока не работает)")
 
     args = parser.parse_args()
 
@@ -420,6 +502,9 @@ def main():
   {Colors.CYAN}./meshctl.py --log 50{Colors.RESET}       # Последние 50 строк лога
   {Colors.CYAN}./meshctl.py --backup{Colors.RESET}       # Резервная копия БД
   {Colors.CYAN}./meshctl.py --test{Colors.RESET}         # Запустить тестовый клиент
+  {Colors.CYAN}./meshctl.py --install-signal -u{Colors.RESET}  # Установить Signal для Ubuntu
+  {Colors.CYAN}./meshctl.py --install-signal -a{Colors.RESET}  # Установить Signal для Arch
+  {Colors.CYAN}./meshctl.py --git-update{Colors.RESET}   # Обновить репозиторий на GitHub
         """)
         return
 
@@ -463,6 +548,22 @@ def main():
         generate_self_signed_cert()
     elif args.test:
         run_test_client()
+    elif args.git_update:
+        git_update()
+    elif args.install_signal:
+        if args.ubuntu:
+            install_signal_protocol("ubuntu")
+        elif args.arch:
+            install_signal_protocol("arch")
+        else:
+            # Автоопределение
+            distro = detect_distro()
+            if distro in ("ubuntu", "debian", "arch"):
+                install_signal_protocol(distro)
+            else:
+                cprint("❌ Не удалось определить дистрибутив.", Colors.RED)
+                cprint("   Используйте --install-signal -u для Ubuntu/Debian", Colors.YELLOW)
+                cprint("   Используйте --install-signal -a для Arch Linux", Colors.YELLOW)
 
 if __name__ == "__main__":
     try:
