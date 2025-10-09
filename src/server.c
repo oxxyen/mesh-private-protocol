@@ -22,14 +22,12 @@
 #include <sys/epoll.h>
 #include <ctype.h>
 #include <sys/stat.h>
-#include <signal/session.h>
 #include <signal/signal_protocol.h>
 #include <signal/curve.h>
 #include <signal/ratchet.h>
 #include <signal/session_builder.h>
 #include <signal/session_cipher.h>
 #include <signal/key_helper.h>
-
 
 // import server.h
 #include "server.h"
@@ -125,12 +123,13 @@ void log_event(const char *type, const char *message, client_t *client) {
 int generate_secure_token(char *buffer, size_t len) {
     if (len < TOKEN_LENGTH + 1) return 0;
     
-    if (!RAND_bytes((unsigned char*)buffer, TOKEN_LENGTH / 2)) {
+    unsigned char random_bytes[TOKEN_LENGTH / 2];
+    if (!RAND_bytes(random_bytes, sizeof(random_bytes))) {
         return 0;
     }
     
-    for (size_t i = 0; i < TOKEN_LENGTH / 2; i++) {
-        snprintf(buffer + i * 2, 3, "%02x", ((unsigned char*)buffer)[i]);
+    for (size_t i = 0; i < sizeof(random_bytes); i++) {
+        snprintf(buffer + i * 2, 3, "%02x", random_bytes[i]);
     }
     buffer[TOKEN_LENGTH] = '\0';
     return 1;
@@ -311,6 +310,10 @@ int identity_key_store_get_identity_key_pair(signal_buffer **public_data, signal
         return SG_ERR_NOMEM;
     }
     
+    // Заполняем тестовыми данными
+    memset(signal_buffer_data(public_buf), 0xAA, 32);
+    memset(signal_buffer_data(private_buf), 0xBB, 32);
+    
     *public_data = public_buf;
     *private_data = private_buf;
     return 0;
@@ -409,10 +412,17 @@ int signal_protocol_init(void) {
     }
     
     // Инициализация криптографии Curve25519
-    result = curve_generate_key_pair(global_context, NULL);
+    ec_key_pair *key_pair = NULL;
+    result = curve_generate_key_pair(global_context, &key_pair);
     if (result != 0) {
         fprintf(stderr, "Failed to initialize crypto: %d\n", result);
+        signal_context_destroy(global_context);
+        global_context = NULL;
         return 0;
+    }
+    
+    if (key_pair) {
+        SIGNAL_UNREF(key_pair);
     }
     
     return 1;
@@ -499,7 +509,7 @@ int init_client_signal_protocol(client_t *client) {
     
     // Очистка временных ключей
     if (identity_key_pair) SIGNAL_UNREF(identity_key_pair);
-    if (pre_keys_head) signal_protocol_key_helper_key_list_free(pre_keys_head);
+    if (pre_keys_head) signal_protocol_key_helper_pre_key_list_free(pre_keys_head);
     if (signed_pre_key) SIGNAL_UNREF(signed_pre_key);
     
     return 1;
@@ -842,6 +852,7 @@ void *client_handler(void *arg) {
                                 if (sqlite3_prepare_v2(server.db_conn, update_sql, -1, &stmt, NULL) == SQLITE_OK) {
                                     sqlite3_bind_text(stmt, 1, nick, -1, SQLITE_STATIC);
                                     sqlite3_step(stmt);
+                                    sqlite3_finalize(stmt);
                                 }
                                 
                                 log_event("LOGIN", nick, client);
@@ -1013,6 +1024,7 @@ int start_mesh_server(void) {
     server.clients = calloc(MAX_CLIENTS, sizeof(client_t));
     if (!server.clients) {
         fprintf(stderr, "Memory allocation failed\n");
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1026,6 +1038,7 @@ int start_mesh_server(void) {
     if (!signal_protocol_init()) {
         fprintf(stderr, "Signal Protocol initialization failed\n");
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1034,6 +1047,7 @@ int start_mesh_server(void) {
     if (!init_database()) {
         fprintf(stderr, "Database initialization failed\n");
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1043,6 +1057,7 @@ int start_mesh_server(void) {
     if (server_fd < 0) {
         perror("socket");
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1060,6 +1075,7 @@ int start_mesh_server(void) {
         perror("bind");
         close(server_fd);
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1067,6 +1083,7 @@ int start_mesh_server(void) {
         perror("listen");
         close(server_fd);
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1079,6 +1096,7 @@ int start_mesh_server(void) {
     if (setup_epoll() == -1) {
         close(server_fd);
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
@@ -1089,6 +1107,7 @@ int start_mesh_server(void) {
         perror("epoll_ctl: server_fd");
         close(server_fd);
         cleanup_resources();
+        pthread_mutex_destroy(&server.mutex);
         return 1;
     }
     
