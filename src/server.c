@@ -1,5 +1,7 @@
 // server.c
+#include <cstdint>
 #include <signal/signal_protocol_types.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -323,19 +325,21 @@ int identity_key_store_get_local_registration_id(void *user_data, uint32_t *regi
     *registration_id = 1; // Базовое значение
     return 0;
 }
+int identity_key_store_save_identity(const signal_protocol_address *address, uint8_t *key_data, size_t key_len, void *user_data) {
+     // Сохранение идентификационного ключа в базе данных
+     printf("Saving identity for: %.*s (device: %d)\n", (int)address->name_len, address-name, address->device_id);
+     return 0;
+}  
+   
 
-int identity_key_store_save_identity(const char *name, size_t name_len, uint8_t *key_data, size_t key_len, void *user_data) {
-    // Сохранение идентификационного ключа в базе данных
-    return 0;
+int identity_key_store_is_trusted_identity(const signal_protocol_address *address, uint8_t *key_data, size_t key_len, void *user_data){
+    // TODO: check by ..
+    return 1;
 }
 
-int identity_key_store_is_trusted_identity(const char *name, size_t name_len, uint8_t *key_data, size_t key_len, void *user_data) {
-    // В реальной реализации здесь должна быть проверка доверия
-    return 1; // Доверяем всем для примера
-}
-
-int session_store_load_session(signal_buffer **record, signal_buffer **user_record, const char *name, size_t name_len, void *user_data) {
-    // Загрузка сессии из базы данных
+int session_store_load_session(signal_buffer **record, signal_buffer **user_record, const signal_protocol_address *address, void *user_data) {
+    printf("Loading session for: %.*s (device: %d)\n", (int)address->name_len, address->name, address->device_id);
+    return SG_ERR_INVALID_PROTOCOL_BUFFER;
     return 0;
 }
 
@@ -344,22 +348,24 @@ int session_store_get_sub_device_sessions(signal_int_list **sessions, const char
     return 0;
 }
 
-int session_store_store_session(const char *name, size_t name_len, uint8_t *record, size_t record_len, uint8_t *user_record, size_t user_record_len, void *user_data) {
-    // Сохранение сессии в базе данных
+int session_store_store_session(const signal_protocol_address *address, uint8_t *record, size_t record_len,  uint8_t *user_record, size_t user_record_len, void *user_data) {
+    // TODO: Сохранение сессии в базе данных
+    printf("Storing session for: %.*s, length: %zu\n", 
+           (int)address->name_len, address->name, record_len);
     return 0;
 }
 
-int session_store_contains_session(const char *name, size_t name_len, void *user_data) {
+int session_store_contains_session(const signal_protocol_address *address, void *user_data) {
     // Проверка наличия сессии
     return 0;
 }
 
-int session_store_delete_session(const char *name, size_t name_len, void *user_data) {
+int session_store_delete_session(const signal_protocol_address *address, void *user_data) {
     // Удаление сессии
     return 0;
 }
 
-int session_store_delete_all_sessions(const char *name, size_t name_len, void *user_data) {
+int session_store_delete_all_sessions(const signal_protocol_address *address, void *user_data) {
     // Удаление всех сессий
     return 0;
 }
