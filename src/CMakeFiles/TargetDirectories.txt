@@ -1,0 +1,3 @@
+/home/just/tsl_chat/src/CMakeFiles/mesh_server.dir
+/home/just/tsl_chat/src/CMakeFiles/edit_cache.dir
+/home/just/tsl_chat/src/CMakeFiles/rebuild_cache.dir
