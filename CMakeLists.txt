@@ -26,6 +26,7 @@ target_link_libraries(mesh_server
     sqlite3
     ssl
     crypto
+    pthread
     signal-protocol-c
     Threads::Threads
 )
