@@ -1,5 +1,7 @@
 // server.c
-#include <cstdint>
+#include <openssl/hmac.h>
+#include <openssl/aes.h>
+#include <stdint.h>
 #include <signal/signal_protocol_types.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -104,6 +106,124 @@ typedef struct {
 int signal_store_init(const char *db_path);
 void signal_store_cleanup(void);
 int signal_protocol_init(void);
+int signal_buffer_set_len(signal_buffer *buffer, size_t len);
+
+int crypto_random(uint8_t *data, size_t len, void *user_data) {
+    if(RAND_bytes(data, len) != 1) {
+        return SG_ERR_UNKNOWN;
+    }
+    return 0;
+}
+
+int crypto_hmac_sha256(void *digest, const uint8_t *data, size_t data_len, const uint8_t *key, size_t key_len, void *user_data) {
+    unsigned char *result = HMAC(EVP_sha256(), key, key_len, data, data_len, NULL, NULL);
+    if(!result) {
+        return SG_ERR_UNKNOWN;
+    }
+    memcpy(digest, result, 32);
+    return 0;
+}
+
+int crypto_aes_encrypt(signal_buffer **output, int cipher_mode, const uint8_t *key, size_t key_len,
+                      const uint8_t *iv, const uint8_t *plaintext, size_t plaintext_len, void *user_data) {
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if (!ctx) return SG_ERR_NOMEM;
+
+    const EVP_CIPHER *cipher;
+    if (key_len == 16) cipher = EVP_aes_128_cbc();
+    else if (key_len == 32) cipher = EVP_aes_256_cbc();
+    else {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    if (EVP_EncryptInit_ex(ctx, cipher, NULL, key, iv) != 1) {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    size_t out_len = plaintext_len + EVP_CIPHER_block_size(cipher);
+    signal_buffer *output_buf = signal_buffer_alloc(out_len);
+    if (!output_buf) {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_NOMEM;
+    }
+
+    int len1, len2;
+    if (EVP_EncryptUpdate(ctx, signal_buffer_data(output_buf), &len1, plaintext, plaintext_len) != 1) {
+        signal_buffer_free(output_buf);
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    if (EVP_EncryptFinal_ex(ctx, signal_buffer_data(output_buf) + len1, &len2) != 1) {
+        signal_buffer_free(output_buf);
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    signal_buffer_len(output_buf, len1 + len2);
+    *output = output_buf;
+    EVP_CIPHER_CTX_free(ctx);
+    return 0;
+}
+
+int crypto_aes_decrypt(signal_buffer **output, int cipher_mode, const uint8_t *key, size_t key_len,
+                      const uint8_t *iv, const uint8_t *ciphertext, size_t ciphertext_len, void *user_data) {
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if (!ctx) return SG_ERR_NOMEM;
+
+    const EVP_CIPHER *cipher;
+    if (key_len == 16) cipher = EVP_aes_128_cbc();
+    else if (key_len == 32) cipher = EVP_aes_256_cbc();
+    else {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    if (EVP_DecryptInit_ex(ctx, cipher, NULL, key, iv) != 1) {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    size_t out_len = ciphertext_len;
+    signal_buffer *output_buf = signal_buffer_alloc(out_len);
+    if (!output_buf) {
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_NOMEM;
+    }
+
+    int len1, len2;
+    if (EVP_DecryptUpdate(ctx, signal_buffer_data(output_buf), &len1, ciphertext, ciphertext_len) != 1) {
+        signal_buffer_free(output_buf);
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    if (EVP_DecryptFinal_ex(ctx, signal_buffer_data(output_buf) + len1, &len2) != 1) {
+        signal_buffer_free(output_buf);
+        EVP_CIPHER_CTX_free(ctx);
+        return SG_ERR_UNKNOWN;
+    }
+
+    signal_buffer_set_len(output_buf, len1 + len2);
+    *output = output_buf;
+    EVP_CIPHER_CTX_free(ctx);
+    return 0;
+}
+
+// Инициализация криптопровайдера
+void setup_signal_crypto_provider(signal_context *context) {
+    signal_crypto_provider provider = {
+        .random_func = crypto_random,
+        .hmac_sha256_init_func = crypto_hmac_sha256, 
+        .aes_encrypt_func = crypto_aes_encrypt,
+        .aes_decrypt_func = crypto_aes_decrypt,
+        .user_data = NULL
+    };
+    
+    signal_context_set_crypto_provider(context, &provider);
+}
 
 // Безопасные функции
 #define strcpy_s(dest, dest_size, src) do { \
@@ -325,11 +445,14 @@ int identity_key_store_get_local_registration_id(void *user_data, uint32_t *regi
     *registration_id = 1; // Базовое значение
     return 0;
 }
-int identity_key_store_save_identity(const signal_protocol_address *address, uint8_t *key_data, size_t key_len, void *user_data) {
-     // Сохранение идентификационного ключа в базе данных
-     printf("Saving identity for: %.*s (device: %d)\n", (int)address->name_len, address-name, address->device_id);
-     return 0;
-}  
+
+int identity_key_store_save_identity(const signal_protocol_address *address, 
+                                    uint8_t *key_data, size_t key_len, void *user_data) {
+    // Сохранение идентификационного ключа в базе данных
+    printf("Saving identity for: %.*s (device: %d)\n", 
+           (int)address->name_len, address->name, address->device_id);
+    return 0;
+}
    
 
 int identity_key_store_is_trusted_identity(const signal_protocol_address *address, uint8_t *key_data, size_t key_len, void *user_data){
@@ -339,7 +462,6 @@ int identity_key_store_is_trusted_identity(const signal_protocol_address *addres
 
 int session_store_load_session(signal_buffer **record, signal_buffer **user_record, const signal_protocol_address *address, void *user_data) {
     printf("Loading session for: %.*s (device: %d)\n", (int)address->name_len, address->name, address->device_id);
-    return SG_ERR_INVALID_PROTOCOL_BUFFER;
     return 0;
 }
 
@@ -365,8 +487,9 @@ int session_store_delete_session(const signal_protocol_address *address, void *u
     return 0;
 }
 
-int session_store_delete_all_sessions(const signal_protocol_address *address, void *user_data) {
+int session_store_delete_all_sessions(const char *name, size_t name_len, void *user_data) {
     // Удаление всех сессий
+    printf("Deleting all sessions for: %.*s\n", (int)name_len, name);
     return 0;
 }
 
@@ -416,6 +539,8 @@ int signal_protocol_init(void) {
         fprintf(stderr, "Failed to create signal context: %d\n", result);
         return 0;
     }
+
+    setup_signal_crypto_provider(global_context);
     
     // Инициализация криптографии Curve25519
     ec_key_pair *key_pair = NULL;
@@ -460,8 +585,9 @@ int init_client_signal_protocol(client_t *client) {
         .store_session_func = session_store_store_session,
         .contains_session_func = session_store_contains_session,
         .delete_session_func = session_store_delete_session,
+        .delete_all_sessions_func = session_store_delete_all_sessions,
         .destroy_func = NULL,
-        .user_data = NULL
+        .user_data = client
     };
     
     signal_protocol_pre_key_store pre_key_store = {
@@ -515,7 +641,7 @@ int init_client_signal_protocol(client_t *client) {
     
     // Очистка временных ключей
     if (identity_key_pair) SIGNAL_UNREF(identity_key_pair);
-    if (pre_keys_head) signal_protocol_key_helper_pre_key_list_free(pre_keys_head);
+    if (pre_keys_head) signal_protocol_key_helper_key_list_free(pre_keys_head);
     if (signed_pre_key) SIGNAL_UNREF(signed_pre_key);
     
     return 1;
