@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/mesh_server_cpp.dir/link.d CMakeFiles/mesh_server_cpp.dir/src/main.cpp.o CMakeFiles/mesh_server_cpp.dir/src/server.c.o -o mesh_server_cpp   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lsqlite3 -lssl -lcrypto -lm -lpthread -lsignal-protocol-c
