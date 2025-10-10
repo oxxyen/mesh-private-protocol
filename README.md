@@ -1,12 +1,15 @@
 <h1 align="center">
   🔒 <b>MESH SECURITY LABS</b> 🔒
 </h1>
+
 <h3 align="center">
-  <i>Where privacy is engineered, not promised.</i>
+  <i>Анонимность. Безопасность. Контроль.</i>
 </h3>
 
 <p align="center">
-  <sub>⚠️ Internal use only. Eyes only. No logs. No traces.</sub>
+  <img src="https://img.shields.io/badge/Status-Internal_Development-red?style=for-the-badge&logo=github"/>
+  <img src="https://img.shields.io/badge/Encryption-E2EE-green?style=for-the-badge&logo=lock"/>
+  <img src="https://img.shields.io/badge/Network-P2P-blue?style=for-the-badge&logo=peercoin"/>
 </p>
 
 # 🧩 Mesh — Разработка анонимного P2P-мессенджера (внутренний репозиторий)
