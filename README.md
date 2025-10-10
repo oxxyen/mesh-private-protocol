@@ -1,11 +1,12 @@
 <h1 align="center">
-  🔒 <b>MESH SECURITY LABS</b> 🔒
+  <code style="font-size:2.8em; font-weight:bold; color:#0f0; background:#000; padding:10px; border-radius:8px;">
+    MESH SECURITY LABS
+  </code>
 </h1>
 
-<h3 align="center">
-  <i>Анонимность. Безопасность. Контроль.</i>
-</h3>
-
+<p align="center">
+  <samp>»»» INITIATING SECURE CHANNEL... ACCESS GRANTED FOR TEAM ONLY</samp>
+</p>
 
 # 🧩 Mesh — Разработка анонимного P2P-мессенджера (внутренний репозиторий)
 
