@@ -11,36 +11,58 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Veil Secure Chat</string>
+   <string>MeshChat Client</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="statusLabel">
       <property name="text">
-       <string>Connecting to server...</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <string>Disconnected</string>
       </property>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Nickname:</string>
+         <string>Host:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="nickLineEdit"/>
+       <widget class="QLineEdit" name="hostEdit">
+        <property name="text">
+         <string>localhost</string>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="registerButton">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Register</string>
+         <string>Port:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="portEdit">
+        <property name="text">
+         <string>5555</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="connectButton">
+        <property name="text">
+         <string>Connect</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="disconnectButton">
+        <property name="text">
+         <string>Disconnect</string>
         </property>
        </widget>
       </item>
@@ -49,14 +71,31 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Nick:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="nickEdit"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Token:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="tokenLineEdit"/>
+       <widget class="QLineEdit" name="tokenEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="registerButton">
+        <property name="text">
+         <string>Register</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="loginButton">
@@ -68,60 +107,127 @@
      </layout>
     </item>
     <item>
-     <widget class="QTextEdit" name="tokenDisplay">
-      <property name="maximumHeight">
-       <number>60</number>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="placeholderText">
-       <string>Your registration token will appear here</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Chat</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="chatDisplay">
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="messageEdit">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="placeholderText">
-         <string>Type your message here...</string>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>To:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="sendButton">
-        <property name="enabled">
-         <bool>false</bool>
+       <widget class="QLineEdit" name="toEdit"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Message:</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="messageEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="sendButton">
         <property name="text">
          <string>Send</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="privateSendButton">
+        <property name="text">
+         <string>Send Private</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="encryptedSendButton">
+        <property name="text">
+         <string>Send Encrypted</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="onlineButton">
+        <property name="text">
+         <string>Online Users</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="helpButton">
+        <property name="text">
+         <string>Help</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="p2pConnectButton">
+        <property name="text">
+         <string>P2P Connect</string>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="chatTab">
+       <attribute name="title">
+        <string>Chat</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTextEdit" name="chatArea">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="onlineTab">
+       <attribute name="title">
+        <string>Online Users</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QListWidget" name="onlineUsersList"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

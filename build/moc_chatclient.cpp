@@ -10,7 +10,6 @@
 #include "../src/assets/chatclient.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
-#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'chatclient.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -23,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ChatClient_t {
-    QByteArrayData data[23];
-    char stringdata0[226];
+    QByteArrayData data[33];
+    char stringdata0[399];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,33 +36,49 @@ QT_MOC_LITERAL(0, 0, 10), // "ChatClient"
 QT_MOC_LITERAL(1, 11, 9), // "connected"
 QT_MOC_LITERAL(2, 21, 0), // ""
 QT_MOC_LITERAL(3, 22, 12), // "disconnected"
-QT_MOC_LITERAL(4, 35, 5), // "error"
-QT_MOC_LITERAL(5, 41, 7), // "message"
-QT_MOC_LITERAL(6, 49, 10), // "registered"
-QT_MOC_LITERAL(7, 60, 4), // "nick"
-QT_MOC_LITERAL(8, 65, 5), // "token"
-QT_MOC_LITERAL(9, 71, 18), // "registrationFailed"
-QT_MOC_LITERAL(10, 90, 6), // "reason"
-QT_MOC_LITERAL(11, 97, 12), // "loginSuccess"
-QT_MOC_LITERAL(12, 110, 11), // "loginFailed"
-QT_MOC_LITERAL(13, 122, 15), // "messageReceived"
-QT_MOC_LITERAL(14, 138, 4), // "from"
-QT_MOC_LITERAL(15, 143, 4), // "text"
-QT_MOC_LITERAL(16, 148, 4), // "type"
-QT_MOC_LITERAL(17, 153, 18), // "onlineUsersUpdated"
-QT_MOC_LITERAL(18, 172, 5), // "users"
-QT_MOC_LITERAL(19, 178, 11), // "onReadyRead"
-QT_MOC_LITERAL(20, 190, 11), // "onSslErrors"
-QT_MOC_LITERAL(21, 202, 16), // "QList<QSslError>"
-QT_MOC_LITERAL(22, 219, 6) // "errors"
+QT_MOC_LITERAL(4, 35, 12), // "loginSuccess"
+QT_MOC_LITERAL(5, 48, 4), // "nick"
+QT_MOC_LITERAL(6, 53, 11), // "loginFailed"
+QT_MOC_LITERAL(7, 65, 5), // "error"
+QT_MOC_LITERAL(8, 71, 19), // "registrationSuccess"
+QT_MOC_LITERAL(9, 91, 5), // "token"
+QT_MOC_LITERAL(10, 97, 18), // "registrationFailed"
+QT_MOC_LITERAL(11, 116, 15), // "messageReceived"
+QT_MOC_LITERAL(12, 132, 4), // "from"
+QT_MOC_LITERAL(13, 137, 7), // "message"
+QT_MOC_LITERAL(14, 145, 22), // "privateMessageReceived"
+QT_MOC_LITERAL(15, 168, 2), // "to"
+QT_MOC_LITERAL(16, 171, 24), // "encryptedMessageReceived"
+QT_MOC_LITERAL(17, 196, 4), // "data"
+QT_MOC_LITERAL(18, 201, 19), // "onlineUsersReceived"
+QT_MOC_LITERAL(19, 221, 5), // "users"
+QT_MOC_LITERAL(20, 227, 12), // "helpReceived"
+QT_MOC_LITERAL(21, 240, 8), // "commands"
+QT_MOC_LITERAL(22, 249, 22), // "p2pConnectionInitiated"
+QT_MOC_LITERAL(23, 272, 6), // "target"
+QT_MOC_LITERAL(24, 279, 7), // "success"
+QT_MOC_LITERAL(25, 287, 13), // "errorOccurred"
+QT_MOC_LITERAL(26, 301, 11), // "onConnected"
+QT_MOC_LITERAL(27, 313, 14), // "onDisconnected"
+QT_MOC_LITERAL(28, 328, 7), // "onError"
+QT_MOC_LITERAL(29, 336, 28), // "QAbstractSocket::SocketError"
+QT_MOC_LITERAL(30, 365, 11), // "socketError"
+QT_MOC_LITERAL(31, 377, 11), // "onReadyRead"
+QT_MOC_LITERAL(32, 389, 9) // "onTimeout"
 
     },
     "ChatClient\0connected\0\0disconnected\0"
-    "error\0message\0registered\0nick\0token\0"
-    "registrationFailed\0reason\0loginSuccess\0"
-    "loginFailed\0messageReceived\0from\0text\0"
-    "type\0onlineUsersUpdated\0users\0onReadyRead\0"
-    "onSslErrors\0QList<QSslError>\0errors"
+    "loginSuccess\0nick\0loginFailed\0error\0"
+    "registrationSuccess\0token\0registrationFailed\0"
+    "messageReceived\0from\0message\0"
+    "privateMessageReceived\0to\0"
+    "encryptedMessageReceived\0data\0"
+    "onlineUsersReceived\0users\0helpReceived\0"
+    "commands\0p2pConnectionInitiated\0target\0"
+    "success\0errorOccurred\0onConnected\0"
+    "onDisconnected\0onError\0"
+    "QAbstractSocket::SocketError\0socketError\0"
+    "onReadyRead\0onTimeout"
 };
 #undef QT_MOC_LITERAL
 
@@ -73,44 +88,56 @@ static const uint qt_meta_data_ChatClient[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      10,       // signalCount
+      13,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   74,    2, 0x06 /* Public */,
-       3,    0,   75,    2, 0x06 /* Public */,
-       4,    1,   76,    2, 0x06 /* Public */,
-       6,    2,   79,    2, 0x06 /* Public */,
-       9,    1,   84,    2, 0x06 /* Public */,
-      11,    1,   87,    2, 0x06 /* Public */,
-      12,    1,   90,    2, 0x06 /* Public */,
-      13,    3,   93,    2, 0x06 /* Public */,
-      13,    2,  100,    2, 0x26 /* Public | MethodCloned */,
-      17,    1,  105,    2, 0x06 /* Public */,
+       1,    0,  104,    2, 0x06 /* Public */,
+       3,    0,  105,    2, 0x06 /* Public */,
+       4,    1,  106,    2, 0x06 /* Public */,
+       6,    1,  109,    2, 0x06 /* Public */,
+       8,    2,  112,    2, 0x06 /* Public */,
+      10,    1,  117,    2, 0x06 /* Public */,
+      11,    2,  120,    2, 0x06 /* Public */,
+      14,    3,  125,    2, 0x06 /* Public */,
+      16,    3,  132,    2, 0x06 /* Public */,
+      18,    1,  139,    2, 0x06 /* Public */,
+      20,    1,  142,    2, 0x06 /* Public */,
+      22,    2,  145,    2, 0x06 /* Public */,
+      25,    1,  150,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      19,    0,  108,    2, 0x08 /* Private */,
-      20,    1,  109,    2, 0x08 /* Private */,
+      26,    0,  153,    2, 0x08 /* Private */,
+      27,    0,  154,    2, 0x08 /* Private */,
+      28,    1,  155,    2, 0x08 /* Private */,
+      31,    0,  158,    2, 0x08 /* Private */,
+      32,    0,  159,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    5,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,    7,    8,
-    QMetaType::Void, QMetaType::QString,   10,
     QMetaType::Void, QMetaType::QString,    7,
-    QMetaType::Void, QMetaType::QString,   10,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   14,   15,   16,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,   14,   15,
-    QMetaType::Void, QMetaType::QStringList,   18,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,    5,    9,
+    QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,   12,   13,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   12,   15,   13,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   12,   15,   17,
+    QMetaType::Void, QMetaType::QStringList,   19,
+    QMetaType::Void, QMetaType::QStringList,   21,
+    QMetaType::Void, QMetaType::QString, QMetaType::Bool,   23,   24,
+    QMetaType::Void, QMetaType::QString,    7,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 21,   22,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 29,   30,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -123,26 +150,32 @@ void ChatClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->connected(); break;
         case 1: _t->disconnected(); break;
-        case 2: _t->error((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 3: _t->registered((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 4: _t->registrationFailed((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->loginSuccess((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 6: _t->loginFailed((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 7: _t->messageReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
-        case 8: _t->messageReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 9: _t->onlineUsersUpdated((*reinterpret_cast< const QStringList(*)>(_a[1]))); break;
-        case 10: _t->onReadyRead(); break;
-        case 11: _t->onSslErrors((*reinterpret_cast< const QList<QSslError>(*)>(_a[1]))); break;
+        case 2: _t->loginSuccess((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: _t->loginFailed((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 4: _t->registrationSuccess((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 5: _t->registrationFailed((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: _t->messageReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 7: _t->privateMessageReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 8: _t->encryptedMessageReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 9: _t->onlineUsersReceived((*reinterpret_cast< const QStringList(*)>(_a[1]))); break;
+        case 10: _t->helpReceived((*reinterpret_cast< const QStringList(*)>(_a[1]))); break;
+        case 11: _t->p2pConnectionInitiated((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 12: _t->errorOccurred((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 13: _t->onConnected(); break;
+        case 14: _t->onDisconnected(); break;
+        case 15: _t->onError((*reinterpret_cast< QAbstractSocket::SocketError(*)>(_a[1]))); break;
+        case 16: _t->onReadyRead(); break;
+        case 17: _t->onTimeout(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 11:
+        case 15:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<QSslError> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAbstractSocket::SocketError >(); break;
             }
             break;
         }
@@ -164,50 +197,78 @@ void ChatClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         }
         {
             using _t = void (ChatClient::*)(const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::error)) {
-                *result = 2;
-                return;
-            }
-        }
-        {
-            using _t = void (ChatClient::*)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::registered)) {
-                *result = 3;
-                return;
-            }
-        }
-        {
-            using _t = void (ChatClient::*)(const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::registrationFailed)) {
-                *result = 4;
-                return;
-            }
-        }
-        {
-            using _t = void (ChatClient::*)(const QString & );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::loginSuccess)) {
-                *result = 5;
+                *result = 2;
                 return;
             }
         }
         {
             using _t = void (ChatClient::*)(const QString & );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::loginFailed)) {
+                *result = 3;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::registrationSuccess)) {
+                *result = 4;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::registrationFailed)) {
+                *result = 5;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::messageReceived)) {
                 *result = 6;
                 return;
             }
         }
         {
             using _t = void (ChatClient::*)(const QString & , const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::messageReceived)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::privateMessageReceived)) {
                 *result = 7;
                 return;
             }
         }
         {
+            using _t = void (ChatClient::*)(const QString & , const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::encryptedMessageReceived)) {
+                *result = 8;
+                return;
+            }
+        }
+        {
             using _t = void (ChatClient::*)(const QStringList & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::onlineUsersUpdated)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::onlineUsersReceived)) {
                 *result = 9;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QStringList & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::helpReceived)) {
+                *result = 10;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QString & , bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::p2pConnectionInitiated)) {
+                *result = 11;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatClient::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ChatClient::errorOccurred)) {
+                *result = 12;
                 return;
             }
         }
@@ -243,13 +304,13 @@ int ChatClient::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 18;
     }
     return _id;
 }
@@ -267,52 +328,80 @@ void ChatClient::disconnected()
 }
 
 // SIGNAL 2
-void ChatClient::error(const QString & _t1)
+void ChatClient::loginSuccess(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void ChatClient::registered(const QString & _t1, const QString & _t2)
+void ChatClient::loginFailed(const QString & _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
-void ChatClient::registrationFailed(const QString & _t1)
+void ChatClient::registrationSuccess(const QString & _t1, const QString & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
-void ChatClient::loginSuccess(const QString & _t1)
+void ChatClient::registrationFailed(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
-void ChatClient::loginFailed(const QString & _t1)
+void ChatClient::messageReceived(const QString & _t1, const QString & _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 
 // SIGNAL 7
-void ChatClient::messageReceived(const QString & _t1, const QString & _t2, const QString & _t3)
+void ChatClient::privateMessageReceived(const QString & _t1, const QString & _t2, const QString & _t3)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
     QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
+// SIGNAL 8
+void ChatClient::encryptedMessageReceived(const QString & _t1, const QString & _t2, const QString & _t3)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t3))) };
+    QMetaObject::activate(this, &staticMetaObject, 8, _a);
+}
+
 // SIGNAL 9
-void ChatClient::onlineUsersUpdated(const QStringList & _t1)
+void ChatClient::onlineUsersReceived(const QStringList & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
+}
+
+// SIGNAL 10
+void ChatClient::helpReceived(const QStringList & _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 10, _a);
+}
+
+// SIGNAL 11
+void ChatClient::p2pConnectionInitiated(const QString & _t1, bool _t2)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
+    QMetaObject::activate(this, &staticMetaObject, 11, _a);
+}
+
+// SIGNAL 12
+void ChatClient::errorOccurred(const QString & _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 12, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

@@ -1,0 +1,15 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+    <!-- Добавьте сюда все ресурсы, которые вы хотите включить в приложение -->
+    <file>mainwindow.ui</file>
+    <file>chatclient.h</file>
+    <file>chatclient.cpp</file>
+    <file>main.cpp</file>
+    <file>mainwindow.cpp</file>
+    <file>mainwindow.h</file>
+    <!-- Если есть изображения, иконки, шрифты — добавьте их здесь -->
+    <!-- Пример: -->
+    <!-- <file>icons/app.ico</file> -->
+    <!-- <file>images/logo.png</file> -->
+</qresource>
+</RCC>

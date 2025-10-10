@@ -1,5 +1,25 @@
-QT += core network widgets
-CONFIG += c++17
-HEADERS += chatclient.h mainwindow.h
-SOURCES += chatclient.cpp mainwindow.cpp main.cpp
-FORMS += mainwindow.ui
+QT       += core gui network widgets
+TARGET = MeshChatClient
+TEMPLATE = app
+
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp \
+    chatclient.cpp
+
+HEADERS += \
+    mainwindow.h \
+    chatclient.h
+
+FORMS += \
+    mainwindow.ui
+
+RESOURCES += \
+    assets.qrc
+
+LIBS += -lssl -lcrypto -lpthread -lsqlite3
+
+INCLUDEPATH += .
+
+# Для Windows
+win32: LIBS += -lws2_32
