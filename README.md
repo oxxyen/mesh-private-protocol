@@ -13,6 +13,13 @@
 </p>
 
 # 🧩 Mesh — Разработка анонимного P2P-мессенджера (внутренний репозиторий)
+<p align="center">
+  🔒───🔐───🛡️───🕵️‍♂️───🧩<br>
+  │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+  🧩───🕵️‍♂️───🛡️───🔐───🔒<br>
+  │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+  🔐───🛡️───🕵️‍♂️───🧩───🔒
+</p>
 
 > ⚠️ **Этот репозиторий предназначен исключительно для разработчиков команды. Не для публичного использования.**
 
