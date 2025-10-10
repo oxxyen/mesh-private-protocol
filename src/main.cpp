@@ -26,7 +26,7 @@ int main() {
         }
 
         server.stop();
-        std::cout << "✅ Mesh Server stopped.\n";
+        std::cout << "✅ Mesh Server stopped cleanly.\n";
 
     } catch (const std::exception &e) {
         std::cerr << "❌ Error: " << e.what() << std::endl;
