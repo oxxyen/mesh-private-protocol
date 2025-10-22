@@ -87,7 +87,7 @@ Script **`brootfrouce.py '** is designed to protect the source code from reverse
 
 ```bash
 python3 brootfrouce.py --help
-``
+```
 ### 🖥️ Architecture
 
 #### 📌 `src/` — Server part  
